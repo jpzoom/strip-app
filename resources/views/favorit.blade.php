@@ -2,9 +2,8 @@
 @section('content')
 
 
-<h2>Vaši favoriti</h2>
-
-@section('sidebar')
+@section('tijelo')
   @parent
+  <div class="lead">Vaši favoriti</div>
 
 @endsection
