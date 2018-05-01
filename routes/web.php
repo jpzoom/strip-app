@@ -27,6 +27,12 @@ Route::get('/profile', function () {
     return view('profil');
 });
 
+Route::get('/createprofile', function () {
+    return view('stvoriprofil');
+});
+
+Route::post('/createprofile/submit', 'MessagesController@submit');
+
 Route::get('/category', function () {
     return view('kategorija');
 });

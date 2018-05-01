@@ -26,7 +26,7 @@
         </ul>
 
         <li class="navbar-nav nav-item form-inline my-2 my-lg-0 nav-item">
-          <a class="nav-link lead text-light" href="/Preglednik_app/stripapp/public/profile">Profil</a>
+          <a class="nav-link lead text-light" href="/Preglednik_app/stripapp/public/createprofile">Stvori profil</a>
         </li>
 
       </div>
