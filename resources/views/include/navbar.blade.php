@@ -1,5 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <a class="navbar-brand" href="#"> Testni prikaz izbornika </a>
+<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #f38606;">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -8,27 +7,27 @@
         <ul class="navbar-nav mr-auto">
 
           <li class="nav-item">
-            <a class="nav-link" href="/Preglednik_app/stripapp/public/">Početna</a>
+            <a class="nav-link lead text-light" href="/Preglednik_app/stripapp/public/">Početna</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="/Preglednik_app/stripapp/public/insertcomic">Unesi strip</a>
+            <a class="nav-link lead text-light" href="/Preglednik_app/stripapp/public/insertcomic">Unesi strip</a>
           </li>
 
           <li class="nav-item dropdown">
-
-            
-            <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kategorije</a>
+            <a class="nav-link dropdown-toggle lead text-light" id="dropdown01" data-toggle="dropdown" aria-haspopup="true">Kategorije</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>
               <a class="dropdown-item" href="#">Something else here</a>
             </div>
           </li>
+
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+
+        <li class="navbar-nav nav-item form-inline my-2 my-lg-0 nav-item">
+          <a class="nav-link lead text-light" href="/Preglednik_app/stripapp/public/profile">Profil</a>
+        </li>
+
       </div>
     </nav>

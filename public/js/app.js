@@ -512,7 +512,7 @@ module.exports = defaults;
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.3
+ * @version 1.11.0
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -534,8 +534,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+var nativeHints = ['native code', '[object MutationObserverConstructor]'];
 
+/**
+ * Determine if a function is implemented natively (as opposed to a polyfill).
+ * @method
+ * @memberof Popper.Utils
+ * @argument {Function | undefined} fn the function to check
+ * @returns {Boolean}
+ */
+var isNative = (function (fn) {
+  return nativeHints.some(function (hint) {
+    return (fn || '').toString().indexOf(hint) > -1;
+  });
+});
+
+var isBrowser = typeof window !== 'undefined';
 var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
 var timeoutDuration = 0;
 for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
@@ -546,16 +560,26 @@ for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
 }
 
 function microtaskDebounce(fn) {
-  var called = false;
+  var scheduled = false;
+  var i = 0;
+  var elem = document.createElement('span');
+
+  // MutationObserver provides a mechanism for scheduling microtasks, which
+  // are scheduled *before* the next task. This gives us a way to debounce
+  // a function but ensure it's called *before* the next paint.
+  var observer = new MutationObserver(function () {
+    fn();
+    scheduled = false;
+  });
+
+  observer.observe(elem, { attributes: true });
+
   return function () {
-    if (called) {
-      return;
+    if (!scheduled) {
+      scheduled = true;
+      elem.setAttribute('x-index', i);
+      i = i + 1; // don't use compund (+=) because it doesn't get optimized in V8
     }
-    called = true;
-    window.Promise.resolve().then(function () {
-      called = false;
-      fn();
-    });
   };
 }
 
@@ -572,7 +596,11 @@ function taskDebounce(fn) {
   };
 }
 
-var supportsMicroTasks = isBrowser && window.Promise;
+// It's common for MutationObserver polyfills to be seen in the wild, however
+// these rely on Mutation Events which only occur when an element is connected
+// to the DOM. The algorithm used in this module does not use a connected element,
+// and so we must ensure that a *native* MutationObserver is available.
+var supportsNativeMutationObserver = isBrowser && isNative(window.MutationObserver);
 
 /**
 * Create a debounced version of a method, that's asynchronously deferred
@@ -583,7 +611,7 @@ var supportsMicroTasks = isBrowser && window.Promise;
 * @argument {Function} fn
 * @returns {Function}
 */
-var debounce = supportsMicroTasks ? microtaskDebounce : taskDebounce;
+var debounce = supportsNativeMutationObserver ? microtaskDebounce : taskDebounce;
 
 /**
  * Check if the given variable is a function
@@ -609,7 +637,7 @@ function getStyleComputedProperty(element, property) {
     return [];
   }
   // NOTE: 1 DOM access here
-  var css = getComputedStyle(element, null);
+  var css = window.getComputedStyle(element, null);
   return property ? css[property] : css;
 }
 
@@ -636,16 +664,8 @@ function getParentNode(element) {
  */
 function getScrollParent(element) {
   // Return body, `getScroll` will take care to get the correct `scrollTop` from it
-  if (!element) {
-    return document.body;
-  }
-
-  switch (element.nodeName) {
-    case 'HTML':
-    case 'BODY':
-      return element.ownerDocument.body;
-    case '#document':
-      return element.body;
+  if (!element || ['HTML', 'BODY', '#document'].indexOf(element.nodeName) !== -1) {
+    return window.document.body;
   }
 
   // Firefox want us to check `-x` and `-y` variations as well
@@ -655,31 +675,11 @@ function getScrollParent(element) {
       overflowX = _getStyleComputedProp.overflowX,
       overflowY = _getStyleComputedProp.overflowY;
 
-  if (/(auto|scroll|overlay)/.test(overflow + overflowY + overflowX)) {
+  if (/(auto|scroll)/.test(overflow + overflowY + overflowX)) {
     return element;
   }
 
   return getScrollParent(getParentNode(element));
-}
-
-var isIE11 = isBrowser && !!(window.MSInputMethodContext && document.documentMode);
-var isIE10 = isBrowser && /MSIE 10/.test(navigator.userAgent);
-
-/**
- * Determines if the browser is Internet Explorer
- * @method
- * @memberof Popper.Utils
- * @param {Number} version to check
- * @returns {Boolean} isIE
- */
-function isIE(version) {
-  if (version === 11) {
-    return isIE11;
-  }
-  if (version === 10) {
-    return isIE10;
-  }
-  return isIE11 || isIE10;
 }
 
 /**
@@ -690,23 +690,12 @@ function isIE(version) {
  * @returns {Element} offset parent
  */
 function getOffsetParent(element) {
-  if (!element) {
-    return document.documentElement;
-  }
-
-  var noOffsetParent = isIE(10) ? document.body : null;
-
   // NOTE: 1 DOM access here
-  var offsetParent = element.offsetParent;
-  // Skip hidden elements which don't have an offsetParent
-  while (offsetParent === noOffsetParent && element.nextElementSibling) {
-    offsetParent = (element = element.nextElementSibling).offsetParent;
-  }
-
+  var offsetParent = element && element.offsetParent;
   var nodeName = offsetParent && offsetParent.nodeName;
 
   if (!nodeName || nodeName === 'BODY' || nodeName === 'HTML') {
-    return element ? element.ownerDocument.documentElement : document.documentElement;
+    return window.document.documentElement;
   }
 
   // .offsetParent will return the closest TD or TABLE in case
@@ -753,7 +742,7 @@ function getRoot(node) {
 function findCommonOffsetParent(element1, element2) {
   // This check is needed to avoid errors in case one of the elements isn't defined for any reason
   if (!element1 || !element1.nodeType || !element2 || !element2.nodeType) {
-    return document.documentElement;
+    return window.document.documentElement;
   }
 
   // Here we make sure to give as "start" the element that comes first in the DOM
@@ -801,8 +790,8 @@ function getScroll(element) {
   var nodeName = element.nodeName;
 
   if (nodeName === 'BODY' || nodeName === 'HTML') {
-    var html = element.ownerDocument.documentElement;
-    var scrollingElement = element.ownerDocument.scrollingElement || html;
+    var html = window.document.documentElement;
+    var scrollingElement = window.document.scrollingElement || html;
     return scrollingElement[upperSide];
   }
 
@@ -845,17 +834,32 @@ function getBordersSize(styles, axis) {
   var sideA = axis === 'x' ? 'Left' : 'Top';
   var sideB = sideA === 'Left' ? 'Right' : 'Bottom';
 
-  return parseFloat(styles['border' + sideA + 'Width'], 10) + parseFloat(styles['border' + sideB + 'Width'], 10);
+  return +styles['border' + sideA + 'Width'].split('px')[0] + +styles['border' + sideB + 'Width'].split('px')[0];
 }
 
+/**
+ * Tells if you are running Internet Explorer 10
+ * @method
+ * @memberof Popper.Utils
+ * @returns {Boolean} isIE10
+ */
+var isIE10 = undefined;
+
+var isIE10$1 = function () {
+  if (isIE10 === undefined) {
+    isIE10 = navigator.appVersion.indexOf('MSIE 10') !== -1;
+  }
+  return isIE10;
+};
+
 function getSize(axis, body, html, computedStyle) {
-  return Math.max(body['offset' + axis], body['scroll' + axis], html['client' + axis], html['offset' + axis], html['scroll' + axis], isIE(10) ? html['offset' + axis] + computedStyle['margin' + (axis === 'Height' ? 'Top' : 'Left')] + computedStyle['margin' + (axis === 'Height' ? 'Bottom' : 'Right')] : 0);
+  return Math.max(body['offset' + axis], html['client' + axis], html['offset' + axis], isIE10$1() ? html['offset' + axis] + computedStyle['margin' + (axis === 'Height' ? 'Top' : 'Left')] + computedStyle['margin' + (axis === 'Height' ? 'Bottom' : 'Right')] : 0);
 }
 
 function getWindowSizes() {
-  var body = document.body;
-  var html = document.documentElement;
-  var computedStyle = isIE(10) && getComputedStyle(html);
+  var body = window.document.body;
+  var html = window.document.documentElement;
+  var computedStyle = isIE10$1() && window.getComputedStyle(html);
 
   return {
     height: getSize('Height', body, html, computedStyle),
@@ -947,8 +951,8 @@ function getBoundingClientRect(element) {
   // IE10 10 FIX: Please, don't ask, the element isn't
   // considered in DOM in some circumstances...
   // This isn't reproducible in IE10 compatibility mode of IE11
-  try {
-    if (isIE(10)) {
+  if (isIE10$1()) {
+    try {
       rect = element.getBoundingClientRect();
       var scrollTop = getScroll(element, 'top');
       var scrollLeft = getScroll(element, 'left');
@@ -956,10 +960,10 @@ function getBoundingClientRect(element) {
       rect.left += scrollLeft;
       rect.bottom += scrollTop;
       rect.right += scrollLeft;
-    } else {
-      rect = element.getBoundingClientRect();
-    }
-  } catch (e) {}
+    } catch (err) {}
+  } else {
+    rect = element.getBoundingClientRect();
+  }
 
   var result = {
     left: rect.left,
@@ -991,23 +995,16 @@ function getBoundingClientRect(element) {
 }
 
 function getOffsetRectRelativeToArbitraryNode(children, parent) {
-  var fixedPosition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-  var isIE10 = isIE(10);
+  var isIE10 = isIE10$1();
   var isHTML = parent.nodeName === 'HTML';
   var childrenRect = getBoundingClientRect(children);
   var parentRect = getBoundingClientRect(parent);
   var scrollParent = getScrollParent(children);
 
   var styles = getStyleComputedProperty(parent);
-  var borderTopWidth = parseFloat(styles.borderTopWidth, 10);
-  var borderLeftWidth = parseFloat(styles.borderLeftWidth, 10);
+  var borderTopWidth = +styles.borderTopWidth.split('px')[0];
+  var borderLeftWidth = +styles.borderLeftWidth.split('px')[0];
 
-  // In cases where the parent is fixed, we must ignore negative scroll in offset calc
-  if (fixedPosition && parent.nodeName === 'HTML') {
-    parentRect.top = Math.max(parentRect.top, 0);
-    parentRect.left = Math.max(parentRect.left, 0);
-  }
   var offsets = getClientRect({
     top: childrenRect.top - parentRect.top - borderTopWidth,
     left: childrenRect.left - parentRect.left - borderLeftWidth,
@@ -1022,8 +1019,8 @@ function getOffsetRectRelativeToArbitraryNode(children, parent) {
   // differently when margins are applied to it. The margins are included in
   // the box of the documentElement, in the other cases not.
   if (!isIE10 && isHTML) {
-    var marginTop = parseFloat(styles.marginTop, 10);
-    var marginLeft = parseFloat(styles.marginLeft, 10);
+    var marginTop = +styles.marginTop.split('px')[0];
+    var marginLeft = +styles.marginLeft.split('px')[0];
 
     offsets.top -= borderTopWidth - marginTop;
     offsets.bottom -= borderTopWidth - marginTop;
@@ -1035,7 +1032,7 @@ function getOffsetRectRelativeToArbitraryNode(children, parent) {
     offsets.marginLeft = marginLeft;
   }
 
-  if (isIE10 && !fixedPosition ? parent.contains(scrollParent) : parent === scrollParent && scrollParent.nodeName !== 'BODY') {
+  if (isIE10 ? parent.contains(scrollParent) : parent === scrollParent && scrollParent.nodeName !== 'BODY') {
     offsets = includeScroll(offsets, parent);
   }
 
@@ -1043,15 +1040,13 @@ function getOffsetRectRelativeToArbitraryNode(children, parent) {
 }
 
 function getViewportOffsetRectRelativeToArtbitraryNode(element) {
-  var excludeScroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-  var html = element.ownerDocument.documentElement;
+  var html = window.document.documentElement;
   var relativeOffset = getOffsetRectRelativeToArbitraryNode(element, html);
   var width = Math.max(html.clientWidth, window.innerWidth || 0);
   var height = Math.max(html.clientHeight, window.innerHeight || 0);
 
-  var scrollTop = !excludeScroll ? getScroll(html) : 0;
-  var scrollLeft = !excludeScroll ? getScroll(html, 'left') : 0;
+  var scrollTop = getScroll(html);
+  var scrollLeft = getScroll(html, 'left');
 
   var offset = {
     top: scrollTop - relativeOffset.top + relativeOffset.marginTop,
@@ -1083,26 +1078,6 @@ function isFixed(element) {
 }
 
 /**
- * Finds the first parent of an element that has a transformed property defined
- * @method
- * @memberof Popper.Utils
- * @argument {Element} element
- * @returns {Element} first transformed parent or documentElement
- */
-
-function getFixedPositionOffsetParent(element) {
-  // This check is needed to avoid errors in case one of the elements isn't defined for any reason
-  if (!element || !element.parentElement || isIE()) {
-    return document.documentElement;
-  }
-  var el = element.parentElement;
-  while (el && getStyleComputedProperty(el, 'transform') === 'none') {
-    el = el.parentElement;
-  }
-  return el || document.documentElement;
-}
-
-/**
  * Computed the boundaries limits and return them
  * @method
  * @memberof Popper.Utils
@@ -1110,35 +1085,31 @@ function getFixedPositionOffsetParent(element) {
  * @param {HTMLElement} reference
  * @param {number} padding
  * @param {HTMLElement} boundariesElement - Element used to define the boundaries
- * @param {Boolean} fixedPosition - Is in fixed position mode
  * @returns {Object} Coordinates of the boundaries
  */
 function getBoundaries(popper, reference, padding, boundariesElement) {
-  var fixedPosition = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-
   // NOTE: 1 DOM access here
-
   var boundaries = { top: 0, left: 0 };
-  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
+  var offsetParent = findCommonOffsetParent(popper, reference);
 
   // Handle viewport case
   if (boundariesElement === 'viewport') {
-    boundaries = getViewportOffsetRectRelativeToArtbitraryNode(offsetParent, fixedPosition);
+    boundaries = getViewportOffsetRectRelativeToArtbitraryNode(offsetParent);
   } else {
     // Handle other cases based on DOM element used as boundaries
     var boundariesNode = void 0;
     if (boundariesElement === 'scrollParent') {
-      boundariesNode = getScrollParent(getParentNode(reference));
+      boundariesNode = getScrollParent(getParentNode(popper));
       if (boundariesNode.nodeName === 'BODY') {
-        boundariesNode = popper.ownerDocument.documentElement;
+        boundariesNode = window.document.documentElement;
       }
     } else if (boundariesElement === 'window') {
-      boundariesNode = popper.ownerDocument.documentElement;
+      boundariesNode = window.document.documentElement;
     } else {
       boundariesNode = boundariesElement;
     }
 
-    var offsets = getOffsetRectRelativeToArbitraryNode(boundariesNode, offsetParent, fixedPosition);
+    var offsets = getOffsetRectRelativeToArbitraryNode(boundariesNode, offsetParent);
 
     // In case of HTML, we need a different computation
     if (boundariesNode.nodeName === 'HTML' && !isFixed(offsetParent)) {
@@ -1239,14 +1210,11 @@ function computeAutoPlacement(placement, refRect, popper, reference, boundariesE
  * @param {Object} state
  * @param {Element} popper - the popper element
  * @param {Element} reference - the reference element (the popper will be relative to this)
- * @param {Element} fixedPosition - is in fixed position mode
  * @returns {Object} An object containing the offsets which will be applied to the popper
  */
 function getReferenceOffsets(state, popper, reference) {
-  var fixedPosition = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
-  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
-  return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent, fixedPosition);
+  var commonOffsetParent = findCommonOffsetParent(popper, reference);
+  return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent);
 }
 
 /**
@@ -1257,7 +1225,7 @@ function getReferenceOffsets(state, popper, reference) {
  * @returns {Object} object containing width and height properties
  */
 function getOuterSizes(element) {
-  var styles = getComputedStyle(element);
+  var styles = window.getComputedStyle(element);
   var x = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
   var y = parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
   var result = {
@@ -1377,11 +1345,10 @@ function runModifiers(modifiers, data, ends) {
   var modifiersToRun = ends === undefined ? modifiers : modifiers.slice(0, findIndex(modifiers, 'name', ends));
 
   modifiersToRun.forEach(function (modifier) {
-    if (modifier['function']) {
-      // eslint-disable-line dot-notation
+    if (modifier.function) {
       console.warn('`modifier.function` is deprecated, use `modifier.fn`!');
     }
-    var fn = modifier['function'] || modifier.fn; // eslint-disable-line dot-notation
+    var fn = modifier.function || modifier.fn;
     if (modifier.enabled && isFunction(fn)) {
       // Add properties to offsets to make them a complete clientRect object
       // we do this before each modifier to make sure the previous one doesn't
@@ -1412,14 +1379,13 @@ function update() {
   var data = {
     instance: this,
     styles: {},
-    arrowStyles: {},
     attributes: {},
     flipped: false,
     offsets: {}
   };
 
   // compute reference element offsets
-  data.offsets.reference = getReferenceOffsets(this.state, this.popper, this.reference, this.options.positionFixed);
+  data.offsets.reference = getReferenceOffsets(this.state, this.popper, this.reference);
 
   // compute auto placement, store placement inside the data object,
   // modifiers will be able to edit `placement` if needed
@@ -1429,12 +1395,9 @@ function update() {
   // store the computed placement inside `originalPlacement`
   data.originalPlacement = data.placement;
 
-  data.positionFixed = this.options.positionFixed;
-
   // compute the popper offsets
   data.offsets.popper = getPopperOffsets(this.popper, data.offsets.reference, data.placement);
-
-  data.offsets.popper.position = this.options.positionFixed ? 'fixed' : 'absolute';
+  data.offsets.popper.position = 'absolute';
 
   // run the modifiers
   data = runModifiers(this.modifiers, data);
@@ -1474,10 +1437,10 @@ function getSupportedPropertyName(property) {
   var prefixes = [false, 'ms', 'Webkit', 'Moz', 'O'];
   var upperProp = property.charAt(0).toUpperCase() + property.slice(1);
 
-  for (var i = 0; i < prefixes.length; i++) {
+  for (var i = 0; i < prefixes.length - 1; i++) {
     var prefix = prefixes[i];
     var toCheck = prefix ? '' + prefix + upperProp : property;
-    if (typeof document.body.style[toCheck] !== 'undefined') {
+    if (typeof window.document.body.style[toCheck] !== 'undefined') {
       return toCheck;
     }
   }
@@ -1495,12 +1458,9 @@ function destroy() {
   // touch DOM only if `applyStyle` modifier is enabled
   if (isModifierEnabled(this.modifiers, 'applyStyle')) {
     this.popper.removeAttribute('x-placement');
+    this.popper.style.left = '';
     this.popper.style.position = '';
     this.popper.style.top = '';
-    this.popper.style.left = '';
-    this.popper.style.right = '';
-    this.popper.style.bottom = '';
-    this.popper.style.willChange = '';
     this.popper.style[getSupportedPropertyName('transform')] = '';
   }
 
@@ -1514,19 +1474,9 @@ function destroy() {
   return this;
 }
 
-/**
- * Get the window associated with the element
- * @argument {Element} element
- * @returns {Window}
- */
-function getWindow(element) {
-  var ownerDocument = element.ownerDocument;
-  return ownerDocument ? ownerDocument.defaultView : window;
-}
-
 function attachToScrollParents(scrollParent, event, callback, scrollParents) {
   var isBody = scrollParent.nodeName === 'BODY';
-  var target = isBody ? scrollParent.ownerDocument.defaultView : scrollParent;
+  var target = isBody ? window : scrollParent;
   target.addEventListener(event, callback, { passive: true });
 
   if (!isBody) {
@@ -1544,7 +1494,7 @@ function attachToScrollParents(scrollParent, event, callback, scrollParents) {
 function setupEventListeners(reference, options, state, updateBound) {
   // Resize event listener on window
   state.updateBound = updateBound;
-  getWindow(reference).addEventListener('resize', state.updateBound, { passive: true });
+  window.addEventListener('resize', state.updateBound, { passive: true });
 
   // Scroll event listener on scroll parents
   var scrollElement = getScrollParent(reference);
@@ -1575,7 +1525,7 @@ function enableEventListeners() {
  */
 function removeEventListeners(reference, state) {
   // Remove resize event listener on window
-  getWindow(reference).removeEventListener('resize', state.updateBound);
+  window.removeEventListener('resize', state.updateBound);
 
   // Remove scroll event listener on scroll parents
   state.scrollParents.forEach(function (target) {
@@ -1599,7 +1549,7 @@ function removeEventListeners(reference, state) {
  */
 function disableEventListeners() {
   if (this.state.eventsEnabled) {
-    cancelAnimationFrame(this.scheduleUpdate);
+    window.cancelAnimationFrame(this.scheduleUpdate);
     this.state = removeEventListeners(this.reference, this.state);
   }
 }
@@ -1673,9 +1623,9 @@ function applyStyle(data) {
   // they will be set as HTML attributes of the element
   setAttributes(data.instance.popper, data.attributes);
 
-  // if arrowElement is defined and arrowStyles has some properties
-  if (data.arrowElement && Object.keys(data.arrowStyles).length) {
-    setStyles(data.arrowElement, data.arrowStyles);
+  // if the arrow style has been computed, apply the arrow style
+  if (data.offsets.arrow) {
+    setStyles(data.arrowElement, data.offsets.arrow);
   }
 
   return data;
@@ -1688,12 +1638,12 @@ function applyStyle(data) {
  * @method
  * @memberof Popper.modifiers
  * @param {HTMLElement} reference - The reference element used to position the popper
- * @param {HTMLElement} popper - The HTML element used as popper
+ * @param {HTMLElement} popper - The HTML element used as popper.
  * @param {Object} options - Popper.js options
  */
 function applyStyleOnLoad(reference, popper, options, modifierOptions, state) {
   // compute reference element offsets
-  var referenceOffsets = getReferenceOffsets(state, popper, reference, options.positionFixed);
+  var referenceOffsets = getReferenceOffsets(state, popper, reference);
 
   // compute auto placement, store placement inside the data object,
   // modifiers will be able to edit `placement` if needed
@@ -1704,7 +1654,7 @@ function applyStyleOnLoad(reference, popper, options, modifierOptions, state) {
 
   // Apply `position` to popper before anything else because
   // without the position applied we can't guarantee correct computations
-  setStyles(popper, { position: options.positionFixed ? 'fixed' : 'absolute' });
+  setStyles(popper, { position: 'absolute' });
 
   return options;
 }
@@ -1739,13 +1689,11 @@ function computeStyle(data, options) {
     position: popper.position
   };
 
-  // Avoid blurry text by using full pixel integers.
-  // For pixel-perfect positioning, top/bottom prefers rounded
-  // values, while left/right prefers floored values.
+  // floor sides to avoid blurry text
   var offsets = {
     left: Math.floor(popper.left),
-    top: Math.round(popper.top),
-    bottom: Math.round(popper.bottom),
+    top: Math.floor(popper.top),
+    bottom: Math.floor(popper.bottom),
     right: Math.floor(popper.right)
   };
 
@@ -1797,10 +1745,9 @@ function computeStyle(data, options) {
     'x-placement': data.placement
   };
 
-  // Update `data` attributes, styles and arrowStyles
+  // Update attributes and styles of `data`
   data.attributes = _extends({}, attributes, data.attributes);
   data.styles = _extends({}, styles, data.styles);
-  data.arrowStyles = _extends({}, data.offsets.arrow, data.arrowStyles);
 
   return data;
 }
@@ -1841,8 +1788,6 @@ function isModifierRequired(modifiers, requestingName, requestedName) {
  * @returns {Object} The data object, properly modified
  */
 function arrow(data, options) {
-  var _data$offsets$arrow;
-
   // arrow depends on keepTogether in order to work
   if (!isModifierRequired(data.instance.modifiers, 'arrow', 'keepTogether')) {
     return data;
@@ -1875,15 +1820,13 @@ function arrow(data, options) {
   var isVertical = ['left', 'right'].indexOf(placement) !== -1;
 
   var len = isVertical ? 'height' : 'width';
-  var sideCapitalized = isVertical ? 'Top' : 'Left';
-  var side = sideCapitalized.toLowerCase();
+  var side = isVertical ? 'top' : 'left';
   var altSide = isVertical ? 'left' : 'top';
   var opSide = isVertical ? 'bottom' : 'right';
   var arrowElementSize = getOuterSizes(arrowElement)[len];
 
   //
-  // extends keepTogether behavior making sure the popper and its
-  // reference have enough pixels in conjuction
+  // extends keepTogether behavior making sure the popper and its reference have enough pixels in conjuction
   //
 
   // top/left side
@@ -1894,23 +1837,20 @@ function arrow(data, options) {
   if (reference[side] + arrowElementSize > popper[opSide]) {
     data.offsets.popper[side] += reference[side] + arrowElementSize - popper[opSide];
   }
-  data.offsets.popper = getClientRect(data.offsets.popper);
 
   // compute center of the popper
   var center = reference[side] + reference[len] / 2 - arrowElementSize / 2;
 
   // Compute the sideValue using the updated popper offsets
-  // take popper margin in account because we don't have this info available
-  var css = getStyleComputedProperty(data.instance.popper);
-  var popperMarginSide = parseFloat(css['margin' + sideCapitalized], 10);
-  var popperBorderSide = parseFloat(css['border' + sideCapitalized + 'Width'], 10);
-  var sideValue = center - data.offsets.popper[side] - popperMarginSide - popperBorderSide;
+  var sideValue = center - getClientRect(data.offsets.popper)[side];
 
   // prevent arrowElement from being placed not contiguously to its popper
   sideValue = Math.max(Math.min(popper[len] - arrowElementSize, sideValue), 0);
 
   data.arrowElement = arrowElement;
-  data.offsets.arrow = (_data$offsets$arrow = {}, defineProperty(_data$offsets$arrow, side, Math.round(sideValue)), defineProperty(_data$offsets$arrow, altSide, ''), _data$offsets$arrow);
+  data.offsets.arrow = {};
+  data.offsets.arrow[side] = Math.round(sideValue);
+  data.offsets.arrow[altSide] = ''; // make sure to unset any eventual altSide value from the DOM node
 
   return data;
 }
@@ -2009,7 +1949,7 @@ function flip(data, options) {
     return data;
   }
 
-  var boundaries = getBoundaries(data.instance.popper, data.instance.reference, options.padding, options.boundariesElement, data.positionFixed);
+  var boundaries = getBoundaries(data.instance.popper, data.instance.reference, options.padding, options.boundariesElement);
 
   var placement = data.placement.split('-')[0];
   var placementOpposite = getOppositePlacement(placement);
@@ -2301,27 +2241,7 @@ function preventOverflow(data, options) {
     boundariesElement = getOffsetParent(boundariesElement);
   }
 
-  // NOTE: DOM access here
-  // resets the popper's position so that the document size can be calculated excluding
-  // the size of the popper element itself
-  var transformProp = getSupportedPropertyName('transform');
-  var popperStyles = data.instance.popper.style; // assignment to help minification
-  var top = popperStyles.top,
-      left = popperStyles.left,
-      transform = popperStyles[transformProp];
-
-  popperStyles.top = '';
-  popperStyles.left = '';
-  popperStyles[transformProp] = '';
-
-  var boundaries = getBoundaries(data.instance.popper, data.instance.reference, options.padding, boundariesElement, data.positionFixed);
-
-  // NOTE: DOM access here
-  // restores the original style properties after the offsets have been computed
-  popperStyles.top = top;
-  popperStyles.left = left;
-  popperStyles[transformProp] = transform;
-
+  var boundaries = getBoundaries(data.instance.popper, data.instance.reference, options.padding, boundariesElement);
   options.boundaries = boundaries;
 
   var order = options.priority;
@@ -2444,7 +2364,7 @@ function inner(data) {
 
   var subtractLength = ['top', 'left'].indexOf(basePlacement) === -1;
 
-  popper[isHoriz ? 'left' : 'top'] = reference[basePlacement] - (subtractLength ? popper[isHoriz ? 'width' : 'height'] : 0);
+  popper[isHoriz ? 'left' : 'top'] = reference[placement] - (subtractLength ? popper[isHoriz ? 'width' : 'height'] : 0);
 
   data.placement = getOppositePlacement(placement);
   data.offsets.popper = getClientRect(popper);
@@ -2522,9 +2442,6 @@ var modifiers = {
    * '10 - 5vh + 3%'
    * '-10px + 5vh, 5px - 6%'
    * ```
-   * > **NB**: If you desire to apply offsets to your poppers in a way that may make them overlap
-   * > with their reference element, unfortunately, you will have to disable the `flip` modifier.
-   * > More on this [reading this issue](https://github.com/FezVrasta/popper.js/issues/373)
    *
    * @memberof modifiers
    * @inner
@@ -2787,7 +2704,6 @@ var modifiers = {
  * @property {Boolean} data.hide True if the reference element is out of boundaries, useful to know when to hide the popper.
  * @property {HTMLElement} data.arrowElement Node used as arrow by arrow modifier
  * @property {Object} data.styles Any CSS property defined here will be applied to the popper, it expects the JavaScript nomenclature (eg. `marginBottom`)
- * @property {Object} data.arrowStyles Any CSS property defined here will be applied to the popper arrow, it expects the JavaScript nomenclature (eg. `marginBottom`)
  * @property {Object} data.boundaries Offsets of the popper boundaries
  * @property {Object} data.offsets The measurements of popper, reference and arrow elements.
  * @property {Object} data.offsets.popper `top`, `left`, `width`, `height` values
@@ -2817,12 +2733,6 @@ var Defaults = {
    * @prop {Popper.placements} placement='bottom'
    */
   placement: 'bottom',
-
-  /**
-   * Set this to true if you want popper to position it self in 'fixed' mode
-   * @prop {Boolean} positionFixed=false
-   */
-  positionFixed: false,
 
   /**
    * Whether events (resize, scroll) are initially enabled
@@ -2908,8 +2818,8 @@ var Popper = function () {
     };
 
     // get reference and popper elements (allow jQuery wrappers)
-    this.reference = reference && reference.jquery ? reference[0] : reference;
-    this.popper = popper && popper.jquery ? popper[0] : popper;
+    this.reference = reference.jquery ? reference[0] : reference;
+    this.popper = popper.jquery ? popper[0] : popper;
 
     // Deep merge modifiers options
     this.options.modifiers = {};
