@@ -10411,6 +10411,18 @@ a.text-dark:focus {
   }
 }
 
+.supertest {
+  color: #000;
+}
+
+.navtest {
+  padding: 3rem 1rem;
+}
+
+.vjeverica {
+  background-image: url("/images/header.png");
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
