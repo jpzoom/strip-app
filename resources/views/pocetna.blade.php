@@ -6,5 +6,9 @@
 @section('sidebar')
   @parent <!-- preuzima "sidebar" iz views/include/sidebar -->
   <p>Ovo je priključeno sidebar-u</p>
+@endsection
+  @section('tijelo')
+    @parent <!-- preuzima "sidebar" iz views/include/sidebar -->
+    <p>AAAAAAAAA</p>
 
 @endsection
