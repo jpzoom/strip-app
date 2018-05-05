@@ -10425,8 +10425,14 @@ a.text-dark:focus {
   background-color: #cccccc;
 }
 
-.navikolur {
+nav {
+  background: -webkit-gradient(linear, left top, left bottom, from(#a90329), color-stop(44%, #8f0222), to(#6d0019));
+  background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%);
   color: #b0413e;
+}
+
+.gumb {
+  border-radius: 1;
 }
 
 .navbar-laravel {
