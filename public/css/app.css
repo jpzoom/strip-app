@@ -10419,8 +10419,14 @@ a.text-dark:focus {
   padding: 3rem 1rem;
 }
 
-.vjeverica {
+.vje {
   background-image: url("/images/header.png");
+  background-repeat: no-repeat, repeat;
+  background-color: #cccccc;
+}
+
+.navikolur {
+  color: #b0413e;
 }
 
 .navbar-laravel {

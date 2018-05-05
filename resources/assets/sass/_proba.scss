@@ -10,6 +10,13 @@
   padding: 3rem 1rem;
 }
 
-.vjeverica {
+.vje {
     background-image: url("/images/header.png");
+    background-repeat: no-repeat, repeat;
+    background-color: #cccccc;
+}
+
+nav {
+  background: linear-gradient(to bottom, #a90329 0%,#8f0222 44%,#6d0019 100%);
+  color: #b0413e;
 }
