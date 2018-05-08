@@ -31,7 +31,7 @@ Route::get('/createprofile', function () {
     return view('stvoriprofil');
 });
 
-Route::post('/createprofile/submit', 'MessagesController@submit');
+Route::post('/createprofile/submit', 'CitateljController@registrirajProfil');
 
 Route::get('/category', function () {
     return view('kategorija');

@@ -1,34 +1,43 @@
 @extends('layouts.aplikacija') <!-- poziva layout iz layouts/aplikacija.blade.php -->
-@section('content')
-
-
-<h2>Vaš korisnički profil</h2>
-
 @section('tijelo')
   @parent
-  {!! Form::open(['url' => 'profil/submit']) !!}
+  <h2>Stvaranje korisničkog profila</h2>
+  <br>
+  {!! Form::open(['url' => 'createprofile/submit']) !!}
+
     <div class="form-group">
-      {{Form::label('Kor-ime', 'Korisničko ime')}}
-      {{Form::text('Kor-ime', '', ['class' => 'form-control', 'placeholder' => 'Unesite korisničko ime'])}}
+      {{Form::label('korime', 'Unesite korisničko ime')}}
+      {{Form::text('korime', '', ['class' => 'form-control', 'placeholder' => '_'])}}
     </div>
 
     <div class="form-group">
-      {{Form::label('email', 'E-Mail Address')}}
-      {{Form::text('email', '', ['class' => 'form-control', 'placeholder' => 'Unesite email'])}}
+      {{Form::label('email', 'Unesite email')}}
+      {{Form::text('email', '', ['class' => 'form-control', 'placeholder' => '_'])}}
+    </div>
+<!-- skrivena lozinka Form::password -->
+    <div class="form-group">
+      {{Form::label('lozinka', 'Unesite lozinku')}}
+      {{Form::password('secret', ['class' => 'form-control', 'placeholder' => '_'])}}
     </div>
 
     <div class="form-group">
-      {{Form::label('Lozinka', 'Lozinka')}}
-      {{Form::text('Lozinka', '', ['class' => 'form-control', 'placeholder' => 'Unesite lozinku'])}}
+      {{Form::label('potvrda', 'Potvrdite lozinku')}}
+      {{Form::password('secret2', ['class' => 'form-control', 'placeholder' => '_'])}}
     </div>
 
     <div class="form-group">
-      {{Form::label('Potvrda', 'Potvrdite lozinku')}}
-      {{Form::text('Potvrda', '', ['class' => 'form-control', 'placeholder' => 'Potvrdite lozinku koju ste unesli'])}}
+      {{Form::label('prSlika', 'Unesite profilnu sliku')}}
+      {{Form::text('prSlika', '', ['class' => 'form-control', 'placeholder' => '_'])}}
     </div>
 
-    {{Form::submit('Potvrdite unos', ['class' => 'btn btn-primary'])}}
 
+<div class="text-right">
+    {{Form::submit('Potvrdite informacije', ['class' => 'btn btn-primary'])}}
+</div>
   {!! Form::close() !!}
+<br>
+<div >
+  @include('include.error')
+</div>
 
 @endsection
