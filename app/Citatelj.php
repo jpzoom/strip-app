@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -16,7 +15,7 @@ class Citatelj extends Model
    * @var array
    */
   protected $fillable = [
-      'name', 'email', 'password', 'userimage',
+      'name', 'email', 'userimage', 'password',
   ];
 
   /**

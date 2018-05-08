@@ -34,7 +34,7 @@ protected function validator(array $data) { // validacija
     return Validator::make($data, [
         'Korisničko ime' => 'required|string|max:255',
         'Email' => 'required|string|email|max:255|unique:users',
-        'Lozinka' => 'required|string|min:8|confirmed',
+        'Lozinka' => 'required|string|min:6|confirmed',
     ]);
 }
 
@@ -43,6 +43,7 @@ protected function create(array $data) { // nakon validne registracije stvara no
         'name' => $data['name'],
         'email' => $data['email'],
         'password' => Hash::make($data['password']),
+        'profilna' => $data['profilna']
     ]);
 }
 }

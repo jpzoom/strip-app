@@ -36,3 +36,11 @@ Route::post('/createprofile/submit', 'CitateljController@registrirajProfil');
 Route::get('/category', function () {
     return view('kategorija');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

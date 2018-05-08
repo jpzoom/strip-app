@@ -25,9 +25,28 @@
 
         </ul>
 
-        <li class="navbar-nav nav-item form-inline my-2 my-lg-0 nav-item">
-          <a class="nav-link lead text-light" href="/stripapp/public/createprofile">Stvori profil</a>
-        </li>
+        @guest
+            <a class="nav-link lead text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
+            <a class="nav-link lead text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
+        @else
+            <li class="nav-link dropdown-toggle lead text-light">
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    {{ Auth::user()->name }} <span class="caret"></span>
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                     document.getElementById('logout-form').submit();">
+                        {{ __('Logout') }}
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
+            </li>
+        @endguest
 
       </div>
     </nav>
