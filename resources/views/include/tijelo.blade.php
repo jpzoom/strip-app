@@ -1,8 +1,9 @@
 @section('tijelo')
+
 <main role="main" class="container">
-      <div class="card jumbotron">
-        <h1>Primjer tijela</h1>
-        <p class="lead">Dobrodošli</p>
+      <div class="card container lined">
+        <br>
         @show
+        <br>
       </div>
     </main>

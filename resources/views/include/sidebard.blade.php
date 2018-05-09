@@ -1,6 +1,7 @@
 @section('sidebard')
-<div class="card container">
+<div class="card container lined">
+  <br>
   <h3>API</h3>
-  Ovo je desni sidebar
+  <p> Ovo je desni sidebar</p>
   @show <!-- omogućuje prikaz -->
 </div>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" >
   <head>
     <meta charset="utf-8">
-    <title>Vjeverix</title>
+    <title>{{ config('app.name', 'Strip preglednik') }}</title>
     <link rel="stylesheet" href="css/app.css">
     @include('include.naslov')
   </head>
   <body>
     @include('include.navbar')
-
+<br>
     <div class="container-fluid">
     <div class="row">
 
