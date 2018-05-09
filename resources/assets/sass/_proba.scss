@@ -5,6 +5,33 @@
     color: #000;
 }
 
+.footxt {
+  box-shadow: 11px 11px 0.1px 13px #413b30;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  text-align: center;
+}
+
+.ada {
+  text-shadow: 2px 2px 16px #210000;
+}
+
+.txshad {
+  text-shadow: 2px 2px 2px #210000;
+}
+
+.navmarg {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+
+.padder {
+  margin-bottom: 0.5rem;
+}
+
 .lined {
   box-shadow: 2px 2px 1px #413b30;
 }
@@ -128,6 +155,11 @@ nav {
   color: #b0413e;
 }
 
+.navis {
+  background: linear-gradient(to bottom, #a90329 0%,#8f0222 44%,#6d0019 100%);
+  color: #b0413e;
+}
+
 .gumb {
   display: inline-block;
   font-weight: 400;
@@ -160,4 +192,37 @@ nav {
   margin-bottom: 2rem;
   background-color: #fff;
   border-radius: 0rem 0rem 0.3rem 0.3rem;
+}
+
+.ddown-item {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.ddown-item:hover,
+.ddown-item:focus {
+  color: #16181b;
+  text-decoration: none;
+  background-color: #ffd6d6;
+}
+
+.ddown-item.active,
+.ddown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #911212;
+}
+
+.ddown-item.disabled,
+.ddown-item:disabled {
+  color: #6c757d;
+  background-color: transparent;
 }
