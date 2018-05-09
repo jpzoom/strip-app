@@ -1,7 +1,7 @@
 @extends('layouts.aplikacija') <!-- poziva layout iz layouts/aplikacija.blade.php -->
 @section('content')
 
-<h2>Početna stranica</h2>
+
 
 @section('sidebar')
   @parent <!-- preuzima "sidebar" iz views/include/sidebar -->
@@ -9,6 +9,7 @@
 @endsection
   @section('tijelo')
     @parent <!-- preuzima "sidebar" iz views/include/sidebar -->
-    <p>AAAAAAAAA</p>
+    <h2>Početna stranica</h2>
+    <p>Ovdje će ići nešto kasnije</p>
 
 @endsection

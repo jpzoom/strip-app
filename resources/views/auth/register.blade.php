@@ -1,11 +1,12 @@
 @extends('layouts.app')
-
+@include('include.naslov')
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <strong><div class="card-header lead">{{ __('Unesite podatke za registraciju') }}</div></strong>
+            <div class="card lined">
+                <strong><div class="card-header lead borde text-light">{{ __('Unesite podatke za registraciju') }}</div></strong>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
