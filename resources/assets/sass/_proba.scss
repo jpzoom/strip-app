@@ -9,6 +9,14 @@
   box-shadow: 2px 2px 1px #413b30;
 }
 
+.anlined {
+  box-shadow: 1px 1px 2px #bababa;
+}
+
+.onelined {
+  box-shadow: 0px 2px 1px #413b30;
+}
+
 .borde {
   background: linear-gradient(to bottom, #a90329 0%,#8f0222 44%,#6d0019 100%);
   color: #b0413e;
@@ -103,6 +111,10 @@
 
 .navtest {
   padding: 3rem 1rem;
+}
+
+.zaheder {
+  background-color: #8f0222;
 }
 
 .vje {
