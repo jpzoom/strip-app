@@ -1,52 +1,84 @@
-<nav class="navbar navbar-expand-md navbar-dark lined">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title >{{ config('app.name', 'Strip preglednik') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+
+    <nav class="navbar navbar-expand-md lined navmarg">
+      <div class="container">
         <ul class="navbar-nav mr-auto">
+          <a class="nav-link lead text-light txshad" href="{{ url('/') }}">Početna</a>
 
-          <li class="nav-item">
-            <a class="nav-link lead text-light" href="/stripapp/public">Početna</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link lead text-light" href="/stripapp/public/insertcomic">Unesi strip</a>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle lead text-light" data-toggle="dropdown" aria-haspopup="true">Kategorije</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="/stripapp/public/category">Kategorije</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+@auth
+            <a class="nav-link lead text-light txshad" href="{{ url('/insertcomic') }}">Unesi strip</a>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle lead text-light txshad" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kategorije</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="ddown-item" href="/stripapp/public/category">Kategorije</a>
+              <a class="ddown-item" href="/stripapp/public/category">Nešto drugo</a>
             </div>
           </li>
-
+@endauth
         </ul>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        @guest
-            <a class="nav-link lead text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
-            <a class="nav-link lead text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
-        @else
-            <li class="nav-link dropdown-toggle lead text-light">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    {{ Auth::user()->name }} <span class="caret"></span>
-                </a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
 
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                       onclick="event.preventDefault();
-                                     document.getElementById('logout-form').submit();">
-                        {{ __('Logout') }}
-                    </a>
+                    </ul>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li><a class="nav-link lead text-light txshad" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                            <li><a class="nav-link lead text-light txshad" href="{{ route('register') }}">{{ __('Registracija') }}</a></li>
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle lead text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="ddown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout računa') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
                 </div>
-            </li>
-        @endguest
+            </div>
+        </nav>
 
-      </div>
-    </nav>
+    </div>
+</body>
+</html>

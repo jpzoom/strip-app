@@ -8,25 +8,25 @@
   </head>
   <body>
     @include('include.navbar')
-<br>
+    <br>
     <div class="container-fluid">
-    <div class="row">
+      <div class="row">
 
-      <div class="col-md-3 col-lg-3">
-        @include('include.sidebar')
+        <div class="col-md-3 col-lg-3">
+          @include('include.sidebar')
+          </div>
+
+            <div class="col-md-6 col-lg-6">
+              @include('include.tijelo')
+            </div>
+
+          <div class="col-md-3 col-lg-3">
+          @include('include.sidebard')
+        </div>
+
       </div>
-
-      <div class="col-md-6 col-lg-6">
-        @include('include.tijelo')
-      </div>
-
-      <div class="col-md-3 col-lg-3">
-        @include('include.sidebard')
-      </div>
-
-    </div>
-    </div>
-
+</div>
 
   </body>
+    @include('include.footer')
 </html>
