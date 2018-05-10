@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/proba.css">
+    <link rel="stylesheet" href="css/sass.css">
+    <link rel="stylesheet" href="css/FeedEk.css">
     <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $('#divRss').FeedEk({
+            FeedUrl: 'http://feeds.feedburner.com/crunchyroll/animenews',
+            MaxCount: '5'
+        })
+    </script>
     @include('include.naslov')
   </head>
   <body>
