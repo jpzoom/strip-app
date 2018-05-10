@@ -15,41 +15,26 @@ Route::get('/', function () {
     return view('pocetna');
 });
 
-Route::get('/insertcomic', function ($id,$nazivStripa) {
+Route::get('/insertcomic', function () {
     return view('strip');
-    function provjeriExstenziju();
-    function prikaziStrip();
-    function staviUKategoriju();
-    function staviUKorKategoriju();
 });
 
 Route::get('/favourites', function () {
     return view('favorit');
 });
 
-Route::get('/profile', function ($id, $korisnickoIme, $email, $profilna, $lozinka) {
+Route::get('/profile', function () {
     return view('profil');
-    echo 'Br.profila: ' .$id . '<br>'
-    . 'Korisnik: ' .$korisnickoIme . '<br>'
-      . 'email: " .$email . '<br>'; 
-    
 });
 
-Route::get('/createprofile', function ($id, $korisnickoIme, $email, $profilna, $lozinka) {
+Route::get('/createprofile', function () {
     return view('stvoriprofil');
-    function registrirajProfil();
-    function logirajProfil();
-    function azurirajProfil();
 });
 
 Route::post('/createprofile/submit', 'CitateljController@registrirajProfil');
 
-Route::get('/category', function ($id,$naziv,$opis) {
+Route::get('/category', function () {
     return view('kategorija');
-    function stvoriKategoriju();
-    function prikaziStripove();
-    function azurirajKategoriju();
-    function makniKategoriju();
 });
 
 Auth::routes();
