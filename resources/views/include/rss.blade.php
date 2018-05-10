@@ -8,11 +8,7 @@
         </div>
 
         <div>
-          <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-          <script type="text/javascript" src="FeedEk.js"></script>
-          <script type="text/javascript" src="js/FeedEk.js"></script>
-          <script type="text/javascript" src="js/jquery.min.js"></script>
-        <!--  <script type="text/javascript" src="{{ URL::asset(js/moment-with-locales.js) }}"></script> -->
+
 
         <script type="text/javascript">
             $('#divRss').FeedEk({

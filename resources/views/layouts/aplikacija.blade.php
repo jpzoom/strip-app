@@ -2,9 +2,12 @@
 <html lang="en" dir="ltr" >
   <head>
     <meta charset="utf-8">
-    
+
     <title>{{ config('app.name', 'Strip preglednik') }}</title>
     <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/proba.css">
+    <script type="text/javascript" src="js/bootstrap.js"></script>
     @include('include.naslov')
   </head>
   <body>
