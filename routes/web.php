@@ -23,13 +23,13 @@ Route::get('/favourites', function () {
     return view('favorit');
 });
 
-Route::get('/profile', function () {
-    return view('profil');
-});
-
 Route::get('/createprofile', function () {
     return view('stvoriprofil');
 });
+
+// profilna
+Route::get('/profile', 'citateljController@profile');
+Route::post('/profile', 'citateljController@updateAvatar');
 
 Route::post('/createprofile/submit', 'CitateljController@registrirajProfil');
 

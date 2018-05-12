@@ -1,49 +1,34 @@
 <?php
 
+namespace App\Http\Controllers;
 
-namespace App\Http\Controllers\Auth;
-
-use App\User;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Auth;
+use Image;
 
-class CitateljController extends Controller
+class citateljController extends Controller
 {
-/*
-    public function registrirajProfil(Request $request) {
-      $this -> validate ($request, ["Korisničko ime" => 'required|string|max:255',
-                                    "Email" => 'required|string|email|max:255',
-                                    "Lozinka" => 'required|string|min:6|confirmed']);
 
-                                    return "Success";
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
+
+
+    public function profile() {
+      return view('profile', array('user' => Auth::user()));
     }
-*/
 
-use RegistersUsers;
+    public function updateAvatar(Request $request) {
+      if ($request -> hasFile('avatar')) {
+        $avatar = $request->file('avatar');
+        $filename = time().'.'.$avatar->getClientOriginalExtension();
+        Image::make($avatar)->resie(300, 300)->save(public_path('uploads/avatars/'.$filename));
 
-protected $redirectTo = '/home';
-
-public function __construct() { // new controller instance
-    $this->middleware('guest');
-}
-
-protected function validator(array $data) { // validacija
-    return Validator::make($data, [
-        'Korisničko ime' => 'required|string|max:255',
-        'Email' => 'required|string|email|max:255|unique:users',
-        'Lozinka' => 'required|string|min:6|confirmed',
-    ]);
-}
-
-protected function create(array $data) { // nakon validne registracije stvara novu instancu korisnika
-    return User::create([
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'password' => Hash::make($data['password']),
-        'profilna' => $data['profilna']
-    ]);
+        $user = Auth::user();
+        $user->avatar = $filename;
+        $user->save();
+    }
+    return view('profile', array('user' => Auth::user()));
 }
 }

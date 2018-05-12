@@ -5,6 +5,11 @@
     color: #000;
 }
 
+.lodi {
+  font-size: 5rem;
+  font-weight: 400;
+}
+
 .footxt {
   box-shadow: 11px 11px 0.1px 13px #413b30;
   position: absolute;
@@ -44,10 +49,20 @@
   box-shadow: 0px 2px 1px #413b30;
 }
 
+.proflined {
+  box-shadow: 5px 10px #bababa;
+}
+
+.leader {
+  font-size: 1.250rem;
+  font-weight: 600;
+}
+
 .borde {
   background: linear-gradient(to bottom, #a90329 0%,#8f0222 44%,#6d0019 100%);
   color: #b0413e;
 }
+
 
 .btntest {
   display: inline-block;

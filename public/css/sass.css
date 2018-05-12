@@ -431,6 +431,8 @@ h6,
   font-weight: 300;
 }
 
+
+
 .display-1 {
   font-size: 6rem;
   font-weight: 300;
@@ -10264,6 +10266,15 @@ a.text-danger:focus {
 
 .text-light {
   color: #f8f9fa !important;
+}
+
+.texthighlight {
+  color: #9ffca0 !important;
+}
+
+a.texthighlight:hover,
+a.texthighlight:focus {
+  color: #6ed36f !important;
 }
 
 a.text-light:hover,

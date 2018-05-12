@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+@include('include.styles')
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -56,18 +57,13 @@
                             <li><a class="nav-link lead text-light txshad" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link lead text-light txshad" href="{{ route('register') }}">{{ __('Registracija') }}</a></li>
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle lead text-light txshad" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                            <li><a class="nav-link fa fa-user lead text-light txshad" href="{{ url('/profile') }}">Profil: {{ Auth::user()->name }} <span class="caret"></span></a>
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="ddown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout računa') }}
-                                    </a>
 
+                                <!-- OVO JE ZA LOGOUT -->
+                                    <li><a class="nav-link lead text-primary txshad" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        {{ __('Odlogirajte se') }}
+                                    </a></li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>

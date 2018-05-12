@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @include('include.naslov')
 @section('content')
-
+@include('include.styles')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
