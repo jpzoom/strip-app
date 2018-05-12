@@ -3,7 +3,7 @@
 
     <body>
         <div>
-
+          @section('postJquery')
           <div id="divRss"></div>
           <script type="text/javascript">
               $('#divRss').FeedEk({
@@ -11,6 +11,7 @@
                   MaxCount: '5'
               })
           </script>
+          @endsection
 
         </div>
     </body>

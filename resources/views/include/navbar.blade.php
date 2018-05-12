@@ -2,6 +2,7 @@
 @include('include.styles')
 <html lang="{{ app()->getLocale() }}">
 <head>
+    @include('include.styles')
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -57,11 +58,13 @@
                             <li><a class="nav-link lead text-light txshad" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link lead text-light txshad" href="{{ route('register') }}">{{ __('Registracija') }}</a></li>
                         @else
-                            <li><a class="nav-link fa fa-user lead text-light txshad" href="{{ url('/profile') }}">Profil: {{ Auth::user()->name }} <span class="caret"></span></a>
+                            <li><a class="nav-link fa fa-user lead text-light txshad" href="{{ url('/profile') }}" style="position:relative; padding-left:60px;">
+                                  <img class="whiteborder woah" src="images/avatars/{{ Auth::user() -> avatar }}" style="width:42px; height:42px; position:absolute; bottom: 1px;left:10px; border-radius:50%;">
+                                  {{ Auth::user()->name }} <span class="caret"></span></a>
 
 
                                 <!-- OVO JE ZA LOGOUT -->
-                                    <li><a class="nav-link lead text-primary txshad" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <li><a class="nav-link fa fa-user lead texthighlight txshad" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Odlogirajte se') }}
                                     </a></li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

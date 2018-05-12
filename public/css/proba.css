@@ -5,9 +5,20 @@
     color: #000;
 }
 
-.lodi {
-  font-size: 5rem;
-  font-weight: 400;
+table.center {
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+.woah {
+    border-style: solid;
+    border-color: #fff;
+    border-width: 2px;
+}
+
+.whiteborder {
+  border-style: solid;
+  border-color: #fff;
 }
 
 .footxt {
@@ -196,7 +207,7 @@ nav {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
 
-.gump-primary {
+.gumb-primary {
   color: #fff;
   background-color: #b0413e;
   border-color: #752c2a;

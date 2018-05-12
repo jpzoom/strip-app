@@ -10268,13 +10268,22 @@ a.text-danger:focus {
   color: #f8f9fa !important;
 }
 
+.textyellowlight {
+  color:#ffe460 !important;
+}
+
+a.textyellowlight:hover,
+a.textyellowlight:focus {
+  color: #ffff60 !important;
+}
+
 .texthighlight {
-  color: #9ffca0 !important;
+  color: #ffff60 !important;
 }
 
 a.texthighlight:hover,
 a.texthighlight:focus {
-  color: #6ed36f !important;
+  color: #ffff60 !important;
 }
 
 a.text-light:hover,
