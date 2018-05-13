@@ -214,7 +214,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Feeds'    => willvincent\Feeds\Facades\FeedsFacade::class,
+        'Feeds' => willvincent\Feeds\Facades\FeedsFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
 
     ],

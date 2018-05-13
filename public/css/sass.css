@@ -50,6 +50,7 @@ html {
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background-color: #383d41;
 }
 
 @-ms-viewport {
@@ -339,6 +340,7 @@ legend {
 progress {
   vertical-align: baseline;
 }
+
 
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {

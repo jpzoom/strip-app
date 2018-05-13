@@ -64,7 +64,7 @@
 
 
                                 <!-- OVO JE ZA LOGOUT -->
-                                    <li><a class="nav-link fa fa-user lead texthighlight txshad" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <li style="border-left: solid; border-width: 2px;"><a class="nav-link fa fa-user lead texthighlight txshad" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Odlogirajte se') }}
                                     </a></li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

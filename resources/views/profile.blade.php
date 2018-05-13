@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card onelined">
-              <div class="card-header lead borde text-light txshad text-lg-center">Vaš profil: {{ Auth::user()->name }}</div>
+              <div class="card-header lead borde text-light txshad text-lg-center" style="font-family: Arial">Vaš profil: {{ Auth::user()->name }}</div>
 
                 <div class="card-body" style="font-family: Arial;">
                     @if (session('status'))
@@ -14,12 +14,12 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                  <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
+                  <div  style=" padding-left: 40px; padding-bottom:40px;display: block; margin-left: auto; margin-right: auto; width: 40%;">
                     <table style=" padding:100px; border-bottom: solid; border-width: 1px; border-color: grey;">
 
                         <th style="padding: 2rem">
                           <div class="float-left">
-                              <img class="lined" src="images/avatars/{{ $user -> avatar }}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right: 5px;">
+                              <img class="picshad" src="images/avatars/{{ $user -> avatar }}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right: 5px;">
                           </div>
                         </th>
 
@@ -34,7 +34,7 @@
                     </table >
                       <br>
                     <form enctype="multipart/form-data" action="/stripapp/public/profile" method="POST">
-                      <label>Promjenite profilnu sliku</label><br>
+                      <label>Želite li promjeniti profilnu sliku?</label><br>
                         <input type="file" name="avatar">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">  <!-- @csrf -->
                         <input type="submit" class="btn btn-primary">

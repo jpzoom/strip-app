@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card lined">
-                <strong><div class="card-header lead borde text-light">{{ __('Unesite podatke za registraciju') }}</div></strong>
+                <strong><div class="card-header lead borde text-light txshad">{{ __('Unesite podatke za registraciju') }}</div></strong>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">

@@ -10,6 +10,34 @@ table.center {
     margin-right:auto;
   }
 
+.picshad {
+  box-shadow: 4px 4px 2px #413b30;
+}
+
+.namecage {
+  border: solid;
+  border-width: 0px;
+  border-radius: 26px 26px 26px 26px;
+  background-color: rgba(33,1,1,0.1);
+  padding-left: 60px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  box-shadow: 0 0 3px #000000;
+}
+
+.profilshad {
+  border: solid;
+  border-width: 0px;
+  border-radius: 0px 0px 15px 15px;
+  padding-left: 40px;
+  padding-bottom:40px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}
+
 .woah {
     border-style: solid;
     border-color: #fff;
@@ -67,6 +95,10 @@ table.center {
 .leader {
   font-size: 1.250rem;
   font-weight: 600;
+}
+
+.naslov {
+  font-family: "Bangers";
 }
 
 .borde {
