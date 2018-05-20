@@ -14,6 +14,17 @@ class citateljController extends Controller
       $this->middleware('auth');
   }
 
+    public function registriranjeProfila() {
+        
+    }
+
+    public function logiranjeProfila() {
+      
+    }
+
+    public function azuriranjeProfila() {
+        
+    }
 
     public function profile() {
       return view('profile', array('user' => Auth::user()));

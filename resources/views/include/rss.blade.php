@@ -1,17 +1,16 @@
 
     <meta charset="UTF-8"/>
 
-    <body>
-        <div>
-          @section('postJquery')
-          <div id="divRss"></div>
-          <script type="text/javascript">
-              $('#divRss').FeedEk({
-                  FeedUrl: 'http://feeds.feedburner.com/crunchyroll/animenews',
-                  MaxCount: '5'
-              })
-          </script>
-          @endsection
+<body>
+    <div>
 
-        </div>
-    </body>
+      <div id="divRss"></div>
+      <script type="text/javascript">
+          $('#divRss').FeedEk({
+              FeedUrl: 'https://www.dccomics.com/feed',
+              MaxCount: '5'
+          })
+      </script>
+
+    </div>
+</body>

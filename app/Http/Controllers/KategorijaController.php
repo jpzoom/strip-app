@@ -6,5 +6,13 @@ use Illuminate\Http\Request;
 
 class KategorijaController extends Controller
 {
-    //
+    public $nazivKategorije = null;
+
+    public function prikaziStripove() {
+
+    }
+
+    public function makniStripove() {
+       
+    }
 }
