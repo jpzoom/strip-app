@@ -31,14 +31,9 @@
           <a class="nav-link lead text-light txshad" href="{{ url('/') }}">Početna</a>
 
 @auth
+            <a class="nav-link lead text-light txshad" href="{{ url('/favourites') }}">Favoriti</a>
+            <a class="nav-link lead text-light txshad" href="{{ url('/category') }}">Vaše kategorije</a>
             <a class="nav-link lead text-light txshad" href="{{ url('/insertcomic') }}">Unesi strip</a>
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle lead text-light txshad" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kategorije</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="ddown-item" href="/stripapp/public/category">Kategorije</a>
-              <a class="ddown-item" href="/stripapp/public/category">Nešto drugo</a>
-            </div>
-          </li>
 @endauth
         </ul>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
