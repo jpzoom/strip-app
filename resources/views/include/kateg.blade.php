@@ -1,8 +1,8 @@
-<div class="container">
-  <div class="row">
-    <legend>Vaše kategorije</legend>
+<div class="container card lined">
+  <div class="row ">
+    <legend class="card-header lead borde text-light txshad">Vaše kategorije</legend>
     @if(session('info'))
-    <div class="alert alert-success"> {{session('info')}} </div>
+    <div style="margin: 10px;" class="alert alert-success"> {{session('info')}} </div>
     @endif
     <table class = "table table-striped table-hover text-center">
       <thead>
@@ -20,9 +20,9 @@
           <td>{{ $kategorija -> id}}</td>
           <td>{{ $kategorija -> Naziv_korisnicke_kategorije}}</td>
           <td>
-            <a href='{{ url("/readKorKateg/{$kategorija ->id}") }}' class="btn btn-sm btn-primary">Čitaj</a>
-            <a href='{{ url("/updateKorKateg/{$kategorija -> id}") }}' class="btn btn-sm btn-success">Ažuriraj</a>
-            <a href='{{ url("/deleteKorKateg/{$kategorija -> id}") }}' class="btn btn-sm btn-danger">Izbriši</a>
+            <a href='{{ url("/readKorKateg/{$kategorija ->id}") }}' class="btn btn-sm btn-primary">PRIKAŽI</a>
+            <a href='{{ url("/updateKorKateg/{$kategorija -> id}") }}' class="btn btn-sm btn-success">AŽURIRAJ</a>
+            <a href='{{ url("/deleteKorKateg/{$kategorija -> id}") }}' class="btn btn-sm btn-danger">IZBRIŠI</a>
           </td>
         </tr>
 
@@ -30,8 +30,8 @@
       @endif
       </tbody>
     </table>
-    <div style="text-align:right;">
-      <a href="{{ url('/stvorikategoriju') }}" class="btn btn-sm btn-primary" >Stvori novu kategoriju</a>
+    <div>
+      <a href="{{ url('/stvorikategoriju') }}" class="btn btn-primary" style="margin-left: 30px; margin-bottom: 10px; float: right;" >Stvori novu kategoriju</a>
     </div>
   </div>
 </div>

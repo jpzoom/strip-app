@@ -30,9 +30,7 @@ class KorisnickaKategorijaController extends Controller
     }
 
     public function azurirajKategoriju(Request $request, $id) {
-      $this->validate($request, [
-        'kategorija' => 'required'
-      ]);
+      $this->validate($request, ['kategorija' => 'required']);
       $data = array(
           'Naziv_korisnicke_kategorije' => $request->input('kategorija')
       );
