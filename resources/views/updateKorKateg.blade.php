@@ -1,6 +1,7 @@
 
   @include('include.naslov')
   @include('include.navbar')
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
   <div class="container">
     <div class="row">
       <div class="col-md-6">
@@ -8,7 +9,7 @@
           <fieldset>
             <br>
             <div class="card lined">
-            <legend class="card-header lead borde text-light txshad">Unos korisničke kategorije</legend>
+            <legend class="card-header lead borde txshad">Unos korisničke kategorije</legend>
             @if(count($errors)>0)
               @foreach($errors->all() as $error)
                 <div class="alert alert-danger"> {{$error}} </div>

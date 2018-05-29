@@ -42,11 +42,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/favourites', function () {
-    return view('favoritiKategorija');
-});
-
-
 // korisnicka kategorija
 Route::get('/stvorikategoriju', function(){
   return view('/createKorKateg');

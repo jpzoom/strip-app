@@ -19,10 +19,10 @@
         <tr>
           <td>{{ $kategorija -> id}}</td>
           <td>{{ $kategorija -> Naziv_korisnicke_kategorije}}</td>
-          <td>
-            <a href='{{ url("/readKorKateg/{$kategorija ->id}") }}' class="btn btn-sm btn-primary">PRIKAŽI</a>
-            <a href='{{ url("/updateKorKateg/{$kategorija -> id}") }}' class="btn btn-sm btn-success">AŽURIRAJ</a>
-            <a href='{{ url("/deleteKorKateg/{$kategorija -> id}") }}' class="btn btn-sm btn-danger">IZBRIŠI</a>
+          <td style="font-family: Tahoma;">
+            <a href='{{ url("/readKorKateg/{$kategorija ->id}") }}' class="btn btn-sm btn-primary anlined">Prikaži</a>
+            <a href='{{ url("/updateKorKateg/{$kategorija -> id}") }}' class="btn btn-sm btn-success anlined">Ažuriraj</a>
+            <a href='{{ url("/deleteKorKateg/{$kategorija -> id}") }}' class="btn btn-sm btn-danger anlined">Izbriši</a>
           </td>
         </tr>
 
@@ -31,7 +31,7 @@
       </tbody>
     </table>
     <div>
-      <a href="{{ url('/stvorikategoriju') }}" class="btn btn-primary" style="margin-left: 30px; margin-bottom: 10px; float: right;" >Stvori novu kategoriju</a>
+      <a href="{{ url('/stvorikategoriju') }}" class="btn btn-primary anlined" style="margin-left: 30px; margin-bottom: 10px; float: right;" >Stvori novu kategoriju</a>
     </div>
   </div>
 </div>

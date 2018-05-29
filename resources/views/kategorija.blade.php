@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" >
+
+<title>{{ config('app.name', 'Strip preglednik') }}</title>
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/proba.css">
+<link rel="stylesheet" href="css/sass.css">
+<link rel="stylesheet" href="css/FeedEk.css">
+<link rel="stylesheet" href="css/css/bootstrap.css">
+<script type="text/javascript" src="js/bootstrap.js"></script>
+
+
   <head>
     <meta charset="utf-8">
-    <title>{{ config('app.name', 'Strip preglednik') }}</title>
-    <link rel="stylesheet" href="css/app.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/proba.css">
-    <link rel="stylesheet" href="css/sass.css">
-    <link rel="stylesheet" href="css/FeedEk.css">
-    <link rel="stylesheet" href="css/css/bootstrap.css">
-    <script type="text/javascript" src="js/bootstrap.js"></script>
     @include('include.naslov')
   </head>
   <body>
