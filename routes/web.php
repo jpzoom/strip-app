@@ -19,10 +19,6 @@ Route::get('/insertcomic', function () {
     return view('strip');
 });
 
-Route::get('/favourites', function () {
-    return view('favorit');
-});
-
 // profilna
 Route::get('/profile', 'citateljController@profile');
 Route::post('/profile', 'citateljController@updateAvatar');
@@ -41,6 +37,11 @@ Route::get('/category', 'KorisnickaKategorijaController@home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Kategorija
+Route::get('/favourites', 'KategorijaController@home');
+Route::get('/readFavourites/{id}', 'KategorijaController@prikaziStripove');
+
 
 // korisnicka kategorija
 Route::get('/stvorikategoriju', function(){

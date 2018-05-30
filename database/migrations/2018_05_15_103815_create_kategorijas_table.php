@@ -13,6 +13,12 @@ class CreateKategorijasTable extends Migration
             $table->string('Naziv_kategorije');
             $table->timestamps();
         });
+
+        DB::table('kategorijas')->insert(
+            array(
+                'Naziv_kategorije' => 'Favoriti korisnika',
+            )
+        );
     }
 
     public function down() {
