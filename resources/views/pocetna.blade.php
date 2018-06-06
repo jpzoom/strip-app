@@ -8,7 +8,8 @@
   @section('tijelo')
     @parent <!-- preuzima "sidebar" iz views/include/sidebar -->
     <div><br></div>
-    <h2>Početna stranica</h2>
+    <h2>Dobrodošli!</h2>
+    <br>
     <p>Ovdje će ići nešto kasnije</p>
 
 @endsection

@@ -1,14 +1,14 @@
-@section('sidebard')
-<div class="card container lined justify-content-center">
-  <h3 class="card-header row borde text-light txshad">Ostalo</h3>
-  <p><br> Ovo je desni sidebar</p>
-  @show <!-- omogućuje prikaz -->
+@section('sidebar')
+<div class="card kontejner lined justify-content-center">
+  <h3 class="card-header row borde text-light txshad" style="font-family: Arial">Sidebar</h3>
 
-  <div id="divRss"></div>
-  <script type="text/javascript" src="{{ asset('js/FeedEk.js') }}">
-        $('#divRss').FeedEk({
-            FeedUrl: 'http://feeds.feedburner.com/crunchyroll/animenews',
-            MaxCount: '5'
-        })
-  </script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/moment-with-locales.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/FeedEk.js') }}"></script>
+  <br>
+     <!-- @include('include.rss2') -->
+     <br>
+     <div>Ostalo</div>
+     <br>
 </div>

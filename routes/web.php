@@ -52,3 +52,7 @@ Route::get('/updateKorKateg/{id}', 'KorisnickaKategorijaController@updateKategor
 Route::post('/azurirajKorKateg/{id}', 'KorisnickaKategorijaController@azurirajKategoriju');
 Route::get('/readKorKateg/{id}', 'KorisnickaKategorijaController@prikaziStripove');
 Route::get('/deleteKorKateg/{id}', 'KorisnickaKategorijaController@makniKategoriju');
+
+// strip
+Route::get('/strip','uploadController@index');
+Route::post('/strip','uploadController@store')->name('file.strip');
