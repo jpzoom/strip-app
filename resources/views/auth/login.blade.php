@@ -2,11 +2,12 @@
 
 @include('include.naslov')
 @section('content')
+@include('include.styles')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card lined">
-                <div class="card-header lead borde text-light">{{ __('Unesite podatke za login') }}</div>
+                <div class="card-header lead borde text-light txshad">{{ __('Unesite podatke za login') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

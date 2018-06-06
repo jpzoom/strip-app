@@ -1,0 +1,40 @@
+.feedEkList {
+	width: 400px;
+	list-style: none outside none;
+	background-color: ##f2f2f2;
+	border: 1px solid #D3CAD7;
+	padding: 0.1rem;
+	color:#3E3E3E;
+	font-family: Arial;
+}
+
+.feedEkList li {
+	border-bottom: 1px solid #D3CAD7;
+	padding: 15px;
+}
+
+.feedEkList li:last-child {
+	border-bottom:none;
+}
+
+.itemTitle a {
+	font-family: Tahoma;
+	font-weight:bold;
+	color:#4EBAFF;
+	text-decoration:none;
+	-moz-transition:color .07s ease-in;
+    -o-transition:color .07s ease-in;
+    -webkit-transition:color .07s ease-in;
+}
+
+.itemTitle a:hover{
+	color: #0378c1;
+}
+
+.itemDate{
+	font-family: Arial;
+	font-size:14px;
+	color:#AAAAAA;
+	margin-top: 4px;
+	margin-bottom: 7px;
+}

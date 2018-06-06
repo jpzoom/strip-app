@@ -19,24 +19,36 @@ Route::get('/insertcomic', function () {
     return view('strip');
 });
 
-Route::get('/favourites', function () {
-    return view('favorit');
-});
-
-Route::get('/profile', function () {
-    return view('profil');
-});
-
-Route::get('/createprofile', function () {
-    return view('stvoriprofil');
-});
+// profilna
+Route::get('/profile', 'citateljController@profile');
+Route::post('/profile', 'citateljController@updateAvatar');
 
 Route::post('/createprofile/submit', 'CitateljController@registrirajProfil');
 
+/*
 Route::get('/category', function () {
     return view('kategorija');
 });
+*/
+Route::get('/category', 'KorisnickaKategorijaController@home');
+// ovaj dio
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Kategorija
+Route::get('/favourites', 'KategorijaController@home');
+Route::get('/readFavourites/{id}', 'KategorijaController@prikaziStripove');
+
+
+// korisnicka kategorija
+Route::get('/stvorikategoriju', function(){
+  return view('/createKorKateg');
+});
+Route::post('/insertkorkategoriju', 'KorisnickaKategorijaController@stvoriKategoriju');
+Route::get('/updateKorKateg/{id}', 'KorisnickaKategorijaController@updateKategoriju');
+Route::post('/azurirajKorKateg/{id}', 'KorisnickaKategorijaController@azurirajKategoriju');
+Route::get('/readKorKateg/{id}', 'KorisnickaKategorijaController@prikaziStripove');
+Route::get('/deleteKorKateg/{id}', 'KorisnickaKategorijaController@makniKategoriju');

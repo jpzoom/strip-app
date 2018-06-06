@@ -4,11 +4,10 @@
 
 
 @section('sidebar')
-  @parent <!-- preuzima "sidebar" iz views/include/sidebar -->
-  <p>Ovo je priključeno sidebar-u</p>
 @endsection
   @section('tijelo')
     @parent <!-- preuzima "sidebar" iz views/include/sidebar -->
+    <div><br></div>
     <h2>Početna stranica</h2>
     <p>Ovdje će ići nešto kasnije</p>
 
