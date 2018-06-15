@@ -37,7 +37,7 @@
                       <label>Želite li promjeniti profilnu sliku?</label><br>
                         <input type="file" name="avatar">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">  <!-- @csrf -->
-                        <input type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary">Potvrdite</button>
                     </form>
                   </div>
                         <br>

@@ -7,8 +7,8 @@
       <div id="divRsse"></div>
       <script type="text/javascript">
           $('#divRsse').FeedEk({
-              FeedUrl: 'https://marvel.com/feeds/rss/headline_news',
-              MaxCount: '3'
+              FeedUrl: 'https://www.cbr.com/category/comics/news/feed/',
+              MaxCount: '7'
           })
       </script>
 

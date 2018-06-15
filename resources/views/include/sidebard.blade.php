@@ -7,8 +7,8 @@
   <script type="text/javascript" src="{{ asset('js/moment-with-locales.js') }}"></script>
   <script type="text/javascript" src="{{ asset('js/FeedEk.js') }}"></script>
   <br>
-     <!-- @include('include.rss2') -->
-     <br>
+     @include('include.rss2')
+<!-- <br>
      <div>Ostalo</div>
-     <br>
+     <br> -->
 </div>

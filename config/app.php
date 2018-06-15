@@ -150,6 +150,7 @@ return [
         willvincent\Feeds\FeedsServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Chumper\Zipper\ZipperServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -216,6 +217,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Feeds' => willvincent\Feeds\Facades\FeedsFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Zipper' => Chumper\Zipper\Zipper::class,
 
     ],
 

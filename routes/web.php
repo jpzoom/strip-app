@@ -56,3 +56,5 @@ Route::get('/deleteKorKateg/{id}', 'KorisnickaKategorijaController@makniKategori
 // strip
 Route::get('/strip','uploadController@index');
 Route::post('/strip','uploadController@store')->name('file.strip');
+
+Route::post('/strip','StripController@prikaziStrip')->name('zip.strip');
